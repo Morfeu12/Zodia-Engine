@@ -31,4 +31,4 @@ class Main:
 # Chamar a class Main passando as largura, altura e titulo da janela
 # game = Main(1200, 720, "Hello world!")
 # Iniciar o loop para o game
-# game.update()
+# game.update() 
