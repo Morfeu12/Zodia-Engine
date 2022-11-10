@@ -1,34 +1,79 @@
 import pygame
+from colors import Color
+from scene import Menu, Gameover
+from game import Game
 
-class Main: 
+class Main:
 
     def __init__(self, sizex, sizey, title):
+
+        pygame.init()
+        pygame.mixer.init()
+        # Especificar uma musica que fique tocando durante o jogo
+        # pygame.mixer.music.load("assets/sounds/bg.ogg")
+        # pygame.mixer.music.play(-1)
+
         self.window = pygame.display.set_mode([sizex, sizey])
         self.title = pygame.display.set_caption(title)
-        self.run = True
+        self.icon = pygame.image.load('assets/ico.png')
+        pygame.display.set_icon(self.icon)
 
-    def draw(self, path, x, y):
-        self.img = pygame.image.load(path)
-        # self.rect = self.img.get_rect() # Retorna um array [posicaoX[0], posicaoY[1], tamanhoX[2], tamanhoY[3]]
-        # self.rect[0] = x
-        # self.rect[1] = y
-        # self.window.blit(self.img, (self.rect[0], self.rect[1]))
-        self.window.blit(self.img, (x, y))
+        # self.menu = Menu("assets/start.png")
+        # self.game = Game()
+        # self.gameover = Gameover("assets/gameover.png")
+        self.height = sizey
+        self.width = sizex 
 
-    def events(self): 
+        self.fps = pygame.time.Clock()
+        self.loop = True
+
+        # Cores
+        self.color = Color()
+
+    # Cenas / Telas
+    def draw(self):
+        self.window.fill(self.color.lavender)
+    # Cada cena tem uma variavel chamada "change_scene" valor False
+    # Tela do Menu / Press Start 
+        # if not self.menu.change_scene:
+        #     self.menu.draw(self.window)
+    # O jogo   
+        # elif not self.game.change_scene:
+        #     self.game.draw(self.window)
+        #     self.game.update()
+    # Game Over
+        # elif not self.gameover.change_scene:
+        #     self.gameover.draw(self.window)
+    # Reset game
+        # else: 
+        #     self.game.change_scene = False
+        #     self.gameover.change_scene = False
+        #     self.game.bee.life = 3
+        #     self.game.bee.pts = 0
+        #     self.game.bee.sprite.rect[1] = 550
+
+    def events(self):
         for events in pygame.event.get():
             if events.type == pygame.QUIT:
-                self.run = False
-    
+                self.loop = False
+            # if not self.menu.change_scene:
+            #     self.menu.events(events)
+            # elif not self.game.change_scene:
+            #     self.game.bee.move_bee(events) 
+            # else:
+            #     self.gameover.events(events) 
+
     def update(self):
-
-        while self.run == True:
-            # self.draw()
+        while self.loop:
+            # Controle de FPS
+            self.fps.tick(30) 
+            self.draw()
             self.events()
-            pygame.display.flip() # Renderiza a tela
-            pygame.time.Clock().tick(60) # Controla o FPS       
+            pygame.display.update()
 
-# Chamar a class Main passando as largura, altura e titulo da janela
-# game = Main(1200, 720, "Hello world!")
-# Iniciar o loop para o game
-# game.update() 
+x = 360
+y = 640
+company = "Zodia Games"
+gamename = "Flappy Bird"
+play = Main(x, y, f'{company} | {gamename}')
+play.update()
